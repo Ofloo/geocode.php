@@ -31,8 +31,8 @@
 
     /* bool returns true or false, true on result false on no result
      */
-    public function __construct ($street, $number, $city, $country) {
-      $url = $this->_URL . $this->url_encode ($street) . "+" . $this->url_encode ($number) . "," . $this->url_encode ($city) . "," . $this->url_encode ($country);
+    public function __construct ($address, $city, $country) {
+      $url = $this->_URL . $this->url_encode ($address) . "," . $this->url_encode ($city) . "," . $this->url_encode ($country);
       if ($xml = @simplexml_load_file($url)) {
         switch ($xml->status) {
           case "OK":
@@ -122,10 +122,14 @@
       return $this->_STATUS;
     }
 
-    private function url_encode ($string) {
+    private function url_encode ($str) {
       $out = null;
-      foreach (str_split ($string) as $key => $value) {
-        $out .= utf8_encode ($value);
+      foreach (str_split ($str) as $k => $v) {
+        if ($v == " ") {
+          $out .= "+";
+        } else {
+          $out .= utf8_encode ($v);
+        }
       }
       return $out;
     }

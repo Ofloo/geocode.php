@@ -20,7 +20,7 @@
  *      MA 02110-1301, USA.
  */
 
-  if ($test = new geocode("vlagstraat","5a","antwerpen","be")) {
+  if ($test = new geocode("vlagstraat 5a","antwerpen","be")) {
     echo ("latitude: " . $test->lat () . "\n");
     echo ("longitude: " . $test->lng () . "\n");
     echo ("accuracy: " . $test->accuracy () . "\n");
@@ -41,7 +41,7 @@
    */
 
 
-  if ($test = new geocode("vlagstraat","5a","antwerpen","be")) {
+  if ($test = new geocode("vlagstraat 5a","antwerpen","be")) {
     echo ("latitude: " . $test->lat () . "\n");
     echo ("longitude: " . $test->lng () . "\n");
     echo ("accuracy: " . $test->accuracy () . "\n");
@@ -62,7 +62,7 @@
      partial
    */
 
-  if ($test = new geocode("blah","5a","blah","be")) {
+  if ($test = new geocode("blah 5a","blah","be")) {
     echo ("latitude: " . $test->lat () . "\n");
     echo ("longitude: " . $test->lng () . "\n");
     echo ("accuracy: " . $test->accuracy () . "\n");
