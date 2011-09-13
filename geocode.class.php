@@ -65,25 +65,25 @@
       return false;
     }
 
-    /* returns latitude
+    /* double returns latitude
      */
     public function lat () {
       return $this->_LAT;
     }
 
-    /* returns longtitude
+    /* double returns longtitude
      */
     public function lng () {
       return $this->_LNG;
     }
 
-    /* bool returns true on partialmatch otherwise false
+    /* bool return true on partialmatch otherwise false
      */
     public function partial () {
       return $this->_PARTIAL;
     }
 
-    /* returns range from 2 to -2, ..
+    /* int returns range from 2 to -2, ..
      *  2: indicates that the returned result is a precise geocode for which we have location information accurate down to street address precision.
      *  1: indicates that the returned result reflects an approximation (usually on a road) interpolated between two precise points (such as intersections). Interpolated results are generally returned when rooftop geocodes are unavailable for a street address.
      *  0: default
@@ -110,7 +110,7 @@
       }
     }
 
-    /* returns range from 1 to -4
+    /* int returns range from 1 to -4
      *  1: indicates that no errors occurred; the address was successfully parsed and at least one geocode was returned.
      *  0: indicates that the geocode was successful but returned no results. This may occur if the geocode was passed a non-existent address or a latlng in a remote location.
      * -1: indicates that you are over your quota.
