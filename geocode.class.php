@@ -1,24 +1,27 @@
 <?php
-/*
- *      geocode.class.php
- *
- *      Copyright 2011 Wouter Snels <info@ofloo.net>
- *
- *      This program is free software; you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation; either version 2 of the License, or
- *      (at your option) any later version.
- *
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
- *
- *      You should have received a copy of the GNU General Public License
- *      along with this program; if not, write to the Free Software
- *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- *      MA 02110-1301, USA.
- */
+  /*
+   * geocode.class.php
+   *
+   * Copyright 2011 Wouter Snels <info@ofloo.net>
+   *
+   * This program is free software; you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation; either version 2 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * You should have received a copy of the GNU General Public License
+   * along with this program; if not, write to the Free Software
+   * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+   * MA 02110-1301, USA.
+   *
+   * SVN: https://narf.ofloo.net/svn/geocode.php/
+   *
+   */
 
   class geocode {
 
@@ -28,6 +31,11 @@
     private $_ACCURACY;
     private $_PARTIAL = false;
     private $_STATUS = -4;
+    private $_FORMAT;
+    private $_STREET;
+    private $_NUMBER;
+    private $_POSTAL;
+    private $_PRECISSION;
 
     /* bool returns true or false, true on result false on no result
      */
@@ -41,6 +49,42 @@
             $this->_ACCURACY = $xml->result->geometry->location_type;
             if ($xml->result->partial_match) {
               $this->_PARTIAL = true;
+            }
+            if (!is_array ($xml->result->type)) {
+              switch ($xml->result->type) {
+                case "post_box":
+                case "floor":
+                case "room":
+                  $this->_PRECISSION = 3;
+                break;
+                case "street_number":
+                  $this->_PRECISSION = 2;
+                break;
+                case "street_address":
+                  $this->_PRECISSION = 1;
+                break;
+                default :
+                  $this->_PRECISSION = 0;
+                break;
+              }
+            } else {
+              $this->_PRECISSION = -1;
+            }
+            $this->_FORMAT = $xml->result->formatted_address;
+            foreach ($xml->result->address_component as $_list) {
+              switch ($_list->type) {
+                case "street_number":
+                  $this->_NUMBER = $_list->long_name;
+                break;
+                case "postal_code":
+                  $this->_POSTAL = $_list->long_name;
+                break;
+                case "route":
+                  $this->_STREET = $_list->long_name;
+                break;
+                default:
+                break;
+              }
             }
             $this->_STATUS = 1;
           break;
@@ -75,6 +119,39 @@
      */
     public function lng () {
       return $this->_LNG;
+    }
+
+    /* string returns streetname
+     */
+    public function street () {
+      return $this->_STREET;
+    }
+
+    /* string returns street number
+     */
+    public function number () {
+      return $this->_NUMBER;
+    }
+
+    public function postal () {
+      return $this->_POSTAL;
+    }
+
+    /* string returns postal code
+     */
+    public function format () {
+      return $this->_FORMAT;
+    }
+
+    /* int returns precission -1 to 3
+     * -1: multiple results
+     *  0: from route level to up (default)
+     *  1: street address
+     *  2: street number
+     *  3: room, floor, post box
+     */
+    public function precission () {
+      return $this->_PRECISSION;
     }
 
     /* bool return true on partialmatch otherwise false
@@ -141,6 +218,11 @@
       unset ($this->_PARTIAL);
       unset ($this->_ACCURACY);
       unset ($this->_STATUS);
+      unset ($this->_FORMAT);
+      unset ($this->_STREET);
+      unset ($this->_NUMBER);
+      unset ($this->_POSTAL);
+      unset ($this->_PRECISSION);
       foreach(get_object_vars($this) as $k => $v) {
         unset($this->$k);
       }
