@@ -35,7 +35,7 @@
     private $_STREET;
     private $_NUMBER;
     private $_POSTAL;
-    private $_PRECISSION;
+    private $_PRECISSION = 0;
 
     /* bool returns true or false, true on result false on no result
      */
@@ -201,12 +201,21 @@
 
     private function url_encode ($str) {
       $out = null;
-      foreach (str_split ($str) as $k => $v) {
+      foreach (mb_str_split ($str) as $k => $v) {
         if ($v == " ") {
           $out .= "+";
         } else {
           $out .= utf8_encode ($v);
         }
+      }
+      return $out;
+    }
+
+    function mb_str_split($str, $length = 1) {
+      if ($length < 1) return false;
+      $out = array();
+      for ($i = 0; $i < mb_strlen($str); $i += $length) {
+        $out[] = mb_substr($str, $i, $length);
       }
       return $out;
     }
