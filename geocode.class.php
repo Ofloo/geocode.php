@@ -201,7 +201,7 @@
 
     private function url_encode ($str) {
       $out = null;
-      foreach (mb_str_split ($str) as $k => $v) {
+      foreach ($this->mb_str_split ($str) as $k => $v) {
         if ($v == " ") {
           $out .= "+";
         } else {
@@ -211,7 +211,7 @@
       return $out;
     }
 
-    function mb_str_split($str, $length = 1) {
+    function mb_str_split ($str, $length = 1) {
       if ($length < 1) return false;
       $out = array();
       for ($i = 0; $i < mb_strlen($str); $i += $length) {
