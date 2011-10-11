@@ -23,6 +23,8 @@
    *
    */
 
+   //todo http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=ulica%20nr%201%202,Warsaw,pl
+
   class geocode {
 
     private $_URL = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=";
@@ -201,17 +203,20 @@
 
     private function url_encode ($str) {
       $out = null;
+      if (!function_exists ('mb_strlen') || !function_exists ('mb_substr')) {
+        return urlencode ($str);
+      }
       foreach ($this->mb_str_split ($str) as $k => $v) {
         if ($v == " ") {
           $out .= "+";
         } else {
-          $out .= utf8_encode ($v);
+          $out .= urlencode ($v);
         }
       }
       return $out;
     }
 
-    function mb_str_split ($str, $length = 1) {
+    private function mb_str_split ($str, $length = 1) {
       if ($length < 1) return false;
       $out = array();
       for ($i = 0; $i < mb_strlen($str); $i += $length) {
