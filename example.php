@@ -29,6 +29,8 @@
    * this doesn't mean precission of the address is not valid all it means is the precission
    * that geocode returns is accurate up untill that point.
    */
+  require_once ("geocode.class.php");
+
   echo ("+" . str_repeat ("-",50) . "+\n");
   if ($test = new geocode("vlagstraat 5a","antwerpen","be")) {
     echo ("latitude: " . $test->lat () . "\n");
@@ -125,5 +127,35 @@
     postal:
     precission: 0
   */
+  if ($test = new geocode("Reja 69","Wrocław","pl")) {
+    echo ("latitude: " . $test->lat () . "\n");
+    echo ("longitude: " . $test->lng () . "\n");
+    echo ("accuracy: " . $test->accuracy () . "\n");
+    echo ("status: " . $test->status () . "\n");
+    echo ("format: " . $test->format () . "\n");
+    echo ("street: " . $test->street () . "\n");
+    echo ("number: " . $test->number () . "\n");
+    echo ("postal: " . $test->postal () . "\n");
+    echo ("precission: " . $test->precission () . "\n");
+    if ($test->partial ()) {
+      echo ("partial\n");
+    }
+  } else {
+    echo "false\n";
+  }
+  $test = null;
+  echo ("+" . str_repeat ("-",50) . "+\n");
+  /*
+    latitude: 51.1204967
+    longitude: 17.0619029
+    accuracy: 2
+    status: 1
+    format: Mikołaja Reja 69, 53-110 Wrocław, Poland
+    street: Mikołaja Reja
+    number: 69
+    postal: 53-110
+    precission: 1
+    partial
+   */
 
 ?>
