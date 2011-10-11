@@ -42,7 +42,7 @@
     /* bool returns true or false, true on result false on no result
      */
     public function __construct ($address, $city, $country) {
-      $url = $this->_URL . $this->url_encode ($address) . "," . $this->url_encode ($city) . "," . $this->url_encode ($country);
+      $url = $this->_URL . urlencode ($address) . "," . urlencode ($city) . "," . urlencode ($country);
       if ($xml = @simplexml_load_file($url)) {
         switch ($xml->status) {
           case "OK":
@@ -199,30 +199,6 @@
      */
     public function status () {
       return $this->_STATUS;
-    }
-
-    private function url_encode ($str) {
-      $out = null;
-      if (!function_exists ('mb_strlen') || !function_exists ('mb_substr')) {
-        return urlencode ($str);
-      }
-      foreach ($this->mb_str_split ($str) as $k => $v) {
-        if ($v == " ") {
-          $out .= "+";
-        } else {
-          $out .= urlencode ($v);
-        }
-      }
-      return $out;
-    }
-
-    private function mb_str_split ($str, $length = 1) {
-      if ($length < 1) return false;
-      $out = array();
-      for ($i = 0; $i < mb_strlen($str); $i += $length) {
-        $out[] = mb_substr($str, $i, $length);
-      }
-      return $out;
     }
 
     public function __destruct () {
