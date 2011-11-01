@@ -127,7 +127,7 @@
     postal:
     precission: 0
   */
-  if ($test = new geocode("Reja 69","Wrocław","pl")) {
+  if ($test = new geocode("Reja 71","Wrocław","pl")) {
     echo ("latitude: " . $test->lat () . "\n");
     echo ("longitude: " . $test->lng () . "\n");
     echo ("accuracy: " . $test->accuracy () . "\n");
