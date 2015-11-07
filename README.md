@@ -1,0 +1,2 @@
+Donations:
+bitcoin 1wqZdYXE7hdU4BTFV9vrUiBUD9LdEdQAj
